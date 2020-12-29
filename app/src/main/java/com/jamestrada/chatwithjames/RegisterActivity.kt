@@ -56,12 +56,22 @@ class RegisterActivity : AppCompatActivity() {
                     val userHashMap = HashMap<String, Any>()
                     userHashMap["uid"] = firebaseUserId
                     userHashMap["username"] = username
-//                    userHashMap["profile"] = username
-//                    userHashMap["cover"] = username
-//                    userHashMap["username"] = username
-//                    userHashMap["username"] = username
-//                    userHashMap["username"] = username
-//                    userHashMap["username"] = username
+                    userHashMap["profile"] = "https://firebasestorage.googleapis.com/v0/b/chat-with-james.appspot.com/o/profile.png?alt=media&token=873ba4bb-04bc-4b80-bb0f-4f512b8eaefc"
+                    userHashMap["cover"] = "https://firebasestorage.googleapis.com/v0/b/chat-with-james.appspot.com/o/cover.jpg?alt=media&token=3eecd759-f6b9-4953-b105-d0bc200ef29a"
+                    userHashMap["status"] = "offline"
+                    userHashMap["search"] = username.toLowerCase()
+                    userHashMap["facebook"] = "https://m.facebook.com"
+                    userHashMap["instagram"] = "https://m.instagram.com"
+                    userHashMap["website"] = "https://www.google.com"
+
+                    refUsers.updateChildren(userHashMap).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
                 } else {
                     Toast.makeText(this, "Error Message: " + it.exception!!.message.toString(), Toast.LENGTH_LONG).show()
                 }
