@@ -46,9 +46,12 @@ class LoginActivity : AppCompatActivity() {
         } else {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
-
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                    finish()
                 } else {
-                    
+                    Toast.makeText(this, "Error Message: " + it.exception!!.message.toString(), Toast.LENGTH_LONG).show()
                 }
             }
         }
