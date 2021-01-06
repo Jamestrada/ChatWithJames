@@ -8,8 +8,10 @@ import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_register.*
+import okhttp3.internal.Internal.instance
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
@@ -48,10 +50,10 @@ class RegisterActivity : AppCompatActivity() {
         } else if (password == "") {
             Toast.makeText(this, "Please write a password", Toast.LENGTH_LONG).show()
         } else {
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) {
                 if (it.isSuccessful) {
                     firebaseUserId = mAuth.currentUser!!.uid
-                    refUsers = FirebaseDatabase.getInstance().getReference("Users/$firebaseUserId")
+                    refUsers = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUserId)
 
                     val userHashMap = HashMap<String, Any>()
                     userHashMap["uid"] = firebaseUserId
@@ -64,7 +66,7 @@ class RegisterActivity : AppCompatActivity() {
                     userHashMap["instagram"] = "https://m.instagram.com"
                     userHashMap["website"] = "https://www.google.com"
 
-                    refUsers.updateChildren(userHashMap).addOnCompleteListener {
+                    refUsers.setValue(userHashMap).addOnCompleteListener(this) {
                         if (it.isSuccessful) {
                             val intent = Intent(this, MainActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "557063193602",
+    "firebase_url": "https://chat-with-james-default-rtdb.firebaseio.com",
     "project_id": "chat-with-james",
     "storage_bucket": "chat-with-james.appspot.com"
   },

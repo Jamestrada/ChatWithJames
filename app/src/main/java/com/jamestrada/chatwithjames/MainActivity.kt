@@ -14,17 +14,28 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.jamestrada.chatwithjames.Fragments.ChatsFragment
 import com.jamestrada.chatwithjames.Fragments.SearchFragment
 import com.jamestrada.chatwithjames.Fragments.SettingsFragment
+import com.jamestrada.chatwithjames.ModelClasses.Users
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    var refUsers: DatabaseReference? = null
+    var firebaseUser: FirebaseUser? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar_main))
+
+        firebaseUser = FirebaseAuth.getInstance().currentUser
+        refUsers = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar_main)
         setSupportActionBar(toolbar)
@@ -40,6 +51,22 @@ class MainActivity : AppCompatActivity() {
 
         viewPager.adapter = viewPagerAdapter
         tabLayout.setupWithViewPager(viewPager)
+
+        // Display username and profile picture
+        refUsers!!.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    // Retrieve profile picture and username
+                    val user: Users? = p0.getValue(Users::class.java)
+                    user_name.text = user!!.getUsername()
+                    Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile).into(profile_image) // placeholder is in the meantime it loads profile image from database
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
