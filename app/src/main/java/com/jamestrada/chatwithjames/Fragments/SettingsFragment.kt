@@ -1,5 +1,6 @@
 package com.jamestrada.chatwithjames.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_settings.view.*
 class SettingsFragment : Fragment() {
     var usersReference: DatabaseReference? = null
     var firebaseUser: FirebaseUser? = null
+    private val RequestCode = 438
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,8 +50,22 @@ class SettingsFragment : Fragment() {
             }
         })
 
+        view.profile_image_settings.setOnClickListener{
+            pickImage()
+        }
+
+        view.cover_image_settings.setOnClickListener{
+            pickImage()
+        }
 
         return view
+    }
+
+    private fun pickImage() {
+        val intent = Intent()
+        intent.type = "image/*" // Send user to their mobile phone gallery
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent, RequestCode)
     }
 
 }
