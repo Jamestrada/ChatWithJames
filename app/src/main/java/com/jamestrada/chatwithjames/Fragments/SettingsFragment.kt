@@ -1,7 +1,9 @@
 package com.jamestrada.chatwithjames.Fragments
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
@@ -34,6 +37,7 @@ class SettingsFragment : Fragment() {
     private var imageUri: Uri? = null
     private var storageRef: StorageReference? = null
     private var coverChecker: String? = ""
+    private var socialChecker: String? = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +77,83 @@ class SettingsFragment : Fragment() {
             pickImage()
         }
 
+        view.set_facebook.setOnClickListener{
+            socialChecker = "facebook"
+            setSocialLinks()
+        }
+
+        view.set_instagram.setOnClickListener{
+            socialChecker = "instagram"
+            setSocialLinks()
+        }
+
+        view.set_website.setOnClickListener{
+            socialChecker = "website"
+            setSocialLinks()
+        }
+
         return view
+    }
+
+    private fun setSocialLinks() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.Theme_AppCompat_DayNight_Dialog_Alert)
+
+        if (socialChecker == "website") {
+            builder.setTitle("Write URL: ")
+        }
+        else {
+            builder.setTitle("Write username: ")
+        }
+
+        val editText = EditText(context)
+
+        if (socialChecker == "website") {
+            editText.hint = "e.g. www.google.com"
+        }
+        else {
+            editText.hint = "e.g. james007"
+        }
+
+        builder.setView(editText)
+        builder.setPositiveButton("Create", DialogInterface.OnClickListener{
+            dialog, which ->
+            val str = editText.text.toString()
+
+            if (str == null) {
+                Toast.makeText(context, "Please type the requested info...", Toast.LENGTH_LONG).show()
+            } else {
+                saveSocialLink(str)
+            }
+        })
+
+        builder.setPositiveButton("Cancel", DialogInterface.OnClickListener{
+            dialog, which ->
+            dialog.cancel()
+        })
+
+        builder.show()
+    }
+
+    private fun saveSocialLink(str: String) {
+        val mapSocial = HashMap<String, Any>()
+
+        when (socialChecker) {
+            "facebook" -> {
+                mapSocial["facebook"] = "https://m.facebook.com/$str"
+            }
+            "instagram" -> {
+                mapSocial["instagram"] = "https://instagram.com/$str"
+            }
+            "website" -> {
+                mapSocial["website"] = "https://$str"
+            }
+        }
+
+        usersReference!!.updateChildren(mapSocial).addOnCompleteListener {
+            if (it.isSuccessful) {
+                Toast.makeText(context, "Updated succesfsully", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun pickImage() {
