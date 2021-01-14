@@ -115,7 +115,7 @@ class SettingsFragment : Fragment() {
         }
 
         builder.setView(editText)
-        builder.setPositiveButton("Create", DialogInterface.OnClickListener{
+        builder.setPositiveButton("Save", DialogInterface.OnClickListener{
             dialog, which ->
             val str = editText.text.toString()
 
@@ -126,7 +126,7 @@ class SettingsFragment : Fragment() {
             }
         })
 
-        builder.setPositiveButton("Cancel", DialogInterface.OnClickListener{
+        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener{
             dialog, which ->
             dialog.cancel()
         })
