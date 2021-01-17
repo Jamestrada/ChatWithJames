@@ -1,11 +1,16 @@
 package com.jamestrada.chatwithjames.AdapterClasses
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.jamestrada.chatwithjames.MainActivity
+import com.jamestrada.chatwithjames.MessageChatActivity
 import com.jamestrada.chatwithjames.ModelClasses.Users
 import com.jamestrada.chatwithjames.R
 import com.squareup.picasso.Picasso
@@ -33,6 +38,25 @@ class UserAdapter(mContext: Context, mUsers: List<Users>, isChatCheck: Boolean):
         val user: Users = mUsers[i]
         holder.userNameTxt.text = user!!.getUsername()
         Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile).into(holder.profileImageView)
+
+        holder.itemView.setOnClickListener {
+            val options = arrayOf<CharSequence>(
+                    "Send Message",
+                    "Visit Profile"
+            )
+            val builder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+            builder.setTitle("What would you like to do?")
+            builder.setItems(options, DialogInterface.OnClickListener { dialog, position ->
+                if (position == 0) { // 0 is user wants to send message
+                    val intent = Intent(mContext, MessageChatActivity::class.java)
+                    intent.putExtra("visit_id", user.getUID())
+                    mContext.startActivity(intent)
+                }
+                if (position == 1) { // 1 is user wants to visit profile
+
+                }
+            })
+        }
     }
 
     override fun getItemCount(): Int {
