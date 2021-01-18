@@ -56,6 +56,7 @@ class UserAdapter(mContext: Context, mUsers: List<Users>, isChatCheck: Boolean):
 
                 }
             })
+            builder.show()
         }
     }
 
