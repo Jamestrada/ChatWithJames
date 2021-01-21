@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.jamestrada.chatwithjames.ModelClasses.Chat
 import com.jamestrada.chatwithjames.R
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.message_item_left.view.*
 
@@ -26,14 +28,38 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
-//        return if (position == 1) {
-//            val view: View = LayoutInflater.from(mContext).inflate(R.layout., viewGroup, false)
-//            return UserAdapter.ViewHolder(view)
-//        }
+        return if (position == 1) {
+            val view: View = LayoutInflater.from(mContext).inflate(com.jamestrada.chatwithjames.R.layout.message_item_right, parent, false)
+            ViewHolder(view)
+        } else {
+            val view: View = LayoutInflater.from(mContext).inflate(com.jamestrada.chatwithjames.R.layout.message_item_left, parent, false)
+            ViewHolder(view)
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // Display messages
+        val chat: Chat = mChatList[position]
 
+        // Images messages
+        if (chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")) {
+            // image message - right side (sender)
+            if (chat.getSender().equals(firebaseUser!!.uid)) {
+                holder.show_text_message!!.visibility = View.GONE
+                holder.right_image_view!!.visibility = View.VISIBLE
+                Picasso.get().load(chat.getUrl()).into(holder.right_image_view)
+            }
+            // image message - left side (receiver)
+            else if (!chat.getSender().equals(firebaseUser!!.uid)) {
+                holder.show_text_message!!.visibility = View.GONE
+                holder.left_image_view!!.visibility = View.VISIBLE
+                Picasso.get().load(chat.getUrl()).into(holder.left_image_view)
+            }
+        }
+        // Text messages
+        else {
+            holder.show_text_message!!.text = chat.getMessage()
+        }
     }
 
     override fun getItemCount(): Int {
@@ -53,6 +79,18 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
             left_image_view = itemView.findViewById(R.id.left_image_view)
             right_image_view = itemView.findViewById(R.id.right_image_view)
             text_seen = itemView.findViewById(R.id.text_seen)
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+
+        firebaseUser = FirebaseAuth.getInstance().currentUser
+
+        return if (mChatList[position].getSender().equals(firebaseUser!!.uid)) {
+            1 // sender
+        } else {
+            0 // receiver
         }
     }
 }
