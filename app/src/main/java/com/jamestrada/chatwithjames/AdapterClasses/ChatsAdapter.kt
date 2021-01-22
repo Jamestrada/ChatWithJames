@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +20,7 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
     private val mContext: Context
     private val mChatList: List<Chat>
     private val imageUrl: String
-    var firebaseUser: FirebaseUser? = null
+    var firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
 
     init {
         this.mChatList = mChatList
@@ -41,6 +42,9 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
         // Display messages
         val chat: Chat = mChatList[position]
 
+        // Display receiver's profile image
+        Picasso.get().load(imageUrl).into(holder.profile_image)
+
         // Images messages
         if (chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")) {
             // image message - right side (sender)
@@ -59,6 +63,30 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
         // Text messages
         else {
             holder.show_text_message!!.text = chat.getMessage()
+        }
+
+        // sent and seen message
+        if (position == mChatList.size - 1) {
+            if (chat.isIsSeen()) {
+                holder.text_seen!!.text = "Seen"
+                if (chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")) {
+                    // move text "seen" below message
+                    val lp: RelativeLayout.LayoutParams? = holder.text_seen!!.layoutParams as RelativeLayout.LayoutParams?
+                    lp!!.setMargins(0, 245, 10, 0)
+                    holder.text_seen!!.layoutParams = lp
+                }
+            }
+            else {
+                holder.text_seen!!.text = "Sent"
+                if (chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")) {
+                    // move text "seen" below message
+                    val lp: RelativeLayout.LayoutParams? = holder.text_seen!!.layoutParams as RelativeLayout.LayoutParams?
+                    lp!!.setMargins(0, 245, 10, 0)
+                    holder.text_seen!!.layoutParams = lp
+                }
+            }
+        } else {
+            holder.text_seen!!.visibility = View.GONE
         }
     }
 
@@ -83,10 +111,6 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-
-        firebaseUser = FirebaseAuth.getInstance().currentUser
-
         return if (mChatList[position].getSender().equals(firebaseUser!!.uid)) {
             1 // sender
         } else {
