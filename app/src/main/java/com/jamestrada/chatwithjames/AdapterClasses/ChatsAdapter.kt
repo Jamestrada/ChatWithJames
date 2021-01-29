@@ -60,6 +60,7 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
                 holder.right_image_view!!.visibility = View.VISIBLE
                 Picasso.get().load(chat.getUrl()).into(holder.right_image_view)
 
+                // delete image options for sender
                 holder.right_image_view!!.setOnClickListener {
                     val options = arrayOf<CharSequence>("View Full Image", "Delete Image", "Cancel")
                     var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
@@ -74,6 +75,7 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
                             deleteSentMessage(position, holder)
                         }
                     })
+                    builder.show()
                 }
             }
             // image message - left side (receiver)
@@ -81,11 +83,41 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
                 holder.show_text_message!!.visibility = View.GONE
                 holder.left_image_view!!.visibility = View.VISIBLE
                 Picasso.get().load(chat.getUrl()).into(holder.left_image_view)
+
+                // delete image options for receiver
+                holder.left_image_view!!.setOnClickListener {
+                    val options = arrayOf<CharSequence>("View Full Image", "Cancel")
+                    var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("What would you like to do?")
+                    builder.setItems(options, DialogInterface.OnClickListener{
+                            dialog, which ->
+                        if (which == 0) {
+                            val intent = Intent(mContext, ViewFullImageActivity::class.java)
+                            intent.putExtra("url", chat.getUrl())
+                            mContext.startActivity(intent)
+                        }
+                    })
+                    builder.show()
+                }
             }
         }
         // Text messages
         else {
             holder.show_text_message!!.text = chat.getMessage()
+
+            // delete text options
+            holder.show_text_message!!.setOnClickListener {
+                val options = arrayOf<CharSequence>("Delete Message", "Cancel")
+                var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                builder.setTitle("What would you like to do?")
+                builder.setItems(options, DialogInterface.OnClickListener{
+                        dialog, which ->
+                    if (which == 0) {
+                        deleteSentMessage(position, holder)
+                    }
+                })
+                builder.show()
+            }
         }
 
         // sent and seen message
