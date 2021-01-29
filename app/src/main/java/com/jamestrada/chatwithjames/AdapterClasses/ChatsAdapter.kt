@@ -105,18 +105,20 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
         else {
             holder.show_text_message!!.text = chat.getMessage()
 
-            // delete text options
-            holder.show_text_message!!.setOnClickListener {
-                val options = arrayOf<CharSequence>("Delete Message", "Cancel")
-                var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
-                builder.setTitle("What would you like to do?")
-                builder.setItems(options, DialogInterface.OnClickListener{
-                        dialog, which ->
-                    if (which == 0) {
-                        deleteSentMessage(position, holder)
-                    }
-                })
-                builder.show()
+            // option to delete sender's text messages, not receiver's
+            if (firebaseUser!!.uid == chat.getSender()) {
+                holder.show_text_message!!.setOnClickListener {
+                    val options = arrayOf<CharSequence>("Delete Message", "Cancel")
+                    var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("What would you like to do?")
+                    builder.setItems(options, DialogInterface.OnClickListener{
+                            dialog, which ->
+                        if (which == 0) {
+                            deleteSentMessage(position, holder)
+                        }
+                    })
+                    builder.show()
+                }
             }
         }
 
