@@ -39,6 +39,25 @@ class UserAdapter(mContext: Context, mUsers: List<Users>, isChatCheck: Boolean):
         holder.userNameTxt.text = user!!.getUsername()
         Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile).into(holder.profileImageView)
 
+        if (isChatCheck) {
+            retrieveLastMessage(user.getUID(), holder.lastMessageTxt)
+        } else {
+            holder.lastMessageTxt.visibility = View.GONE
+        }
+
+        if (isChatCheck) {
+            if (user.getStatus() == "online") {
+                holder.onlineImageView.visibility = View.VISIBLE
+                holder.offlineImageView.visibility = View.GONE
+            } else {
+                holder.onlineImageView.visibility = View.GONE
+                holder.offlineImageView.visibility = View.VISIBLE
+            }
+        } else {
+            holder.onlineImageView.visibility = View.GONE
+            holder.offlineImageView.visibility = View.GONE
+        }
+
         holder.itemView.setOnClickListener {
             val options = arrayOf<CharSequence>(
                     "Send Message",
