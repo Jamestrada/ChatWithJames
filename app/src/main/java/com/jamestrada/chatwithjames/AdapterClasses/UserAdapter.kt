@@ -9,8 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.jamestrada.chatwithjames.MainActivity
 import com.jamestrada.chatwithjames.MessageChatActivity
+import com.jamestrada.chatwithjames.ModelClasses.Chat
 import com.jamestrada.chatwithjames.ModelClasses.Users
 import com.jamestrada.chatwithjames.R
 import com.squareup.picasso.Picasso
@@ -22,6 +28,7 @@ class UserAdapter(mContext: Context, mUsers: List<Users>, isChatCheck: Boolean):
     private val mContext: Context
     private val mUsers: List<Users>
     private val isChatCheck: Boolean
+    var lastMsg: String = ""
 
     init {
         this.mUsers = mUsers
@@ -99,4 +106,31 @@ class UserAdapter(mContext: Context, mUsers: List<Users>, isChatCheck: Boolean):
         }
     }
 
+    private fun retrieveLastMessage(chatUserId: String?, lastMessageTxt: TextView) {
+        lastMsg = "defaultMsg"
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val reference = FirebaseDatabase.getInstance().reference.child("Chats")
+        reference.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                for (dataSnapshot in p0.children) {
+                    val chat: Chat? = dataSnapshot.getValue(Chat::class.java)
+                    if (firebaseUser != null && chat != null) {
+                        if (chat.getReceiver() == firebaseUser!!.uid && chat.getSender() == chatUserId || chat.getReceiver() == chatUserId && chat.getSender() == firebaseUser!!.uid) {
+                            lastMsg = chat.getMessage()!!
+                        }
+                    }
+                }
+                when (lastMsg) {
+                    "defaultMsg" -> lastMessageTxt.text = "no message"
+                    "sent you an image." -> lastMessageTxt.text = "image sent."
+                    else -> lastMessageTxt.text = lastMsg
+                }
+                lastMsg = "defaultMsg"
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
+    }
 }
