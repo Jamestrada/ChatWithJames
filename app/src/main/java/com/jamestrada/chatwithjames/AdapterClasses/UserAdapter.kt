@@ -19,6 +19,7 @@ import com.jamestrada.chatwithjames.MessageChatActivity
 import com.jamestrada.chatwithjames.ModelClasses.Chat
 import com.jamestrada.chatwithjames.ModelClasses.Users
 import com.jamestrada.chatwithjames.R
+import com.jamestrada.chatwithjames.VisitUserProfileActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -79,7 +80,9 @@ class UserAdapter(mContext: Context, mUsers: List<Users>, isChatCheck: Boolean):
                     mContext.startActivity(intent)
                 }
                 if (position == 1) { // 1 is user wants to visit profile
-
+                    val intent = Intent(mContext, VisitUserProfileActivity::class.java)
+                    intent.putExtra("visit_id", user.getUID())
+                    mContext.startActivity(intent)
                 }
             })
             builder.show()
