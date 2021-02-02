@@ -50,7 +50,7 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
         val chat: Chat = mChatList[position]
 
         // Display receiver's profile image
-        Picasso.get().load(imageUrl).into(holder.profile_image)
+//        Picasso.get().load(imageUrl).into(holder.profile_image)
 
         // Images messages
         if (chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")) {

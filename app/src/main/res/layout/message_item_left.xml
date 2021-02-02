@@ -9,7 +9,8 @@
         android:id="@+id/profile_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/profile">
+        android:src="@drawable/profile"
+        android:visibility="gone">
     </de.hdodenhof.circleimageview.CircleImageView>
 
     <TextView

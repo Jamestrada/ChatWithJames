@@ -73,7 +73,7 @@ class UserAdapter(mContext: Context, mUsers: List<Users>, isChatCheck: Boolean):
             )
             val builder: AlertDialog.Builder = AlertDialog.Builder(mContext)
             builder.setTitle("What would you like to do?")
-            builder.setItems(options, DialogInterface.OnClickListener { dialog, position ->
+            builder.setItems(options, DialogInterface.OnClickListener { _, position ->
                 if (position == 0) { // 0 is user wants to send message
                     val intent = Intent(mContext, MessageChatActivity::class.java)
                     intent.putExtra("visit_id", user.getUID())

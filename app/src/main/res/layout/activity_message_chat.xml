@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:hint="write message here..."
+            android:hint="Type a message"
             android:layout_toRightOf="@id/attach_image_file_btn"
             android:layout_toLeftOf="@id/send_message_btn"
             android:layout_centerVertical="true"
