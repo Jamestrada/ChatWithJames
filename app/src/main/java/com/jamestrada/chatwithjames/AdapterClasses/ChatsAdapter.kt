@@ -37,10 +37,10 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
         return if (position == 1) {
-            val view: View = LayoutInflater.from(mContext).inflate(com.jamestrada.chatwithjames.R.layout.message_item_right, parent, false)
+            val view: View = LayoutInflater.from(mContext).inflate(R.layout.message_item_right, parent, false)
             ViewHolder(view)
         } else {
-            val view: View = LayoutInflater.from(mContext).inflate(com.jamestrada.chatwithjames.R.layout.message_item_left, parent, false)
+            val view: View = LayoutInflater.from(mContext).inflate(R.layout.message_item_left, parent, false)
             ViewHolder(view)
         }
     }
