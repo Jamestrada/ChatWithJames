@@ -6,14 +6,16 @@ class Data {
     private var body: String = ""
     private var title: String = ""
     private var sent: String = ""
+    private var messageId: String = ""
 
     constructor()
-    constructor(user: String, icon: Int, body: String, title: String, sent: String) {
+    constructor(user: String, icon: Int, body: String, title: String, sent: String, messageId: String) {
         this.user = user
         this.icon = icon
         this.body = body
         this.title = title
         this.sent = sent
+        this.messageId = messageId
     }
 
     fun getUser(): String? {
@@ -54,6 +56,14 @@ class Data {
 
     fun setSent(sent: String) {
         this.sent = sent
+    }
+
+    fun getMessageId(): String? {
+        return messageId
+    }
+
+    fun setMessageId(messageId: String) {
+        this.messageId = messageId
     }
 
 }

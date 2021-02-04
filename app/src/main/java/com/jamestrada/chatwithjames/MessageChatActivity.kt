@@ -159,7 +159,7 @@ class MessageChatActivity : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
                 for (dataSnapshot in p0.children) {
                     val token: Token? = dataSnapshot.getValue(Token::class.java)
-                    val data = Data(firebaseUser!!.uid, R.mipmap.ic_launcher, "$username: $message", "New Message", userIdVisit) // notification format
+                    val data = Data(firebaseUser!!.uid, R.mipmap.ic_launcher, "$username: $message", "New Message", userIdVisit, "message_id") // notification format
                     val sender = Sender(data!!, token!!.getToken().toString())
 
                     apiService!!.sendNotification(sender).enqueue(object : Callback<MyResponse>{

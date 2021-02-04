@@ -42,12 +42,14 @@ class MyFirebaseMessaging: FirebaseMessagingService() {
         val icon = mRemoteMessage.data["icon"]
         val title = mRemoteMessage.data["title"]
         val body = mRemoteMessage.data["body"]
+        val message_id = mRemoteMessage.data["message_id"]
 
         val notification = mRemoteMessage.notification
         val j = user!!.replace("[\\D]".toRegex(), "").toInt()
         val intent = Intent(this, MessageChatActivity::class.java)
         val bundle = Bundle()
         bundle.putString("userid", user)
+        bundle.putString("messageId", message_id)
         intent.putExtras(bundle)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
@@ -77,12 +79,14 @@ class MyFirebaseMessaging: FirebaseMessagingService() {
         val icon = mRemoteMessage.data["icon"]
         val title = mRemoteMessage.data["title"]
         val body = mRemoteMessage.data["body"]
+        val message_id = mRemoteMessage.data["message_id"]
 
         val notification = mRemoteMessage.notification
         val j = user!!.replace("[\\D]".toRegex(), "").toInt()
         val intent = Intent(this, MessageChatActivity::class.java)
         val bundle = Bundle()
         bundle.putString("userid", user)
+        bundle.putString("messageId", message_id)
         intent.putExtras(bundle)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
