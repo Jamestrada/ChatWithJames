@@ -39,6 +39,7 @@ class MessageChatActivity : AppCompatActivity() {
     var reference: DatabaseReference? = null
     var notify = false
     var apiService: APIService? = null
+//    var messageId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +58,7 @@ class MessageChatActivity : AppCompatActivity() {
 
         intent = intent
         userIdVisit = intent.getStringExtra("visit_id")!!
+//        messageId = intent.getStringExtra("message_id")
         firebaseUser = FirebaseAuth.getInstance().currentUser
 
         recycler_view_chats = findViewById(R.id.recycler_view_chats)
@@ -141,7 +143,7 @@ class MessageChatActivity : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
                 val user = p0.getValue(Users::class.java)
                 if (notify) {
-                    sendNotification(receiverId, user!!.getUsername(), message)
+                    sendNotification(receiverId, user!!.getUsername(), message, messageKey)
                 }
                 notify = false
             }
@@ -152,14 +154,14 @@ class MessageChatActivity : AppCompatActivity() {
         })
     }
 
-    private fun sendNotification(receiverId: String, username: String?, message: String) {
+    private fun sendNotification(receiverId: String, username: String?, message: String, messageId: String) {
         val ref = FirebaseDatabase.getInstance().reference.child("Tokens")
         val query = ref.orderByKey().equalTo(receiverId)
         query.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 for (dataSnapshot in p0.children) {
                     val token: Token? = dataSnapshot.getValue(Token::class.java)
-                    val data = Data(firebaseUser!!.uid, R.mipmap.ic_launcher, "$username: $message", "New Message", userIdVisit, "message_id") // notification format
+                    val data = Data(firebaseUser!!.uid, R.mipmap.ic_launcher, "$username: $message", "New Message", userIdVisit, messageId) // notification format
                     val sender = Sender(data!!, token!!.getToken().toString())
 
                     apiService!!.sendNotification(sender).enqueue(object : Callback<MyResponse>{
@@ -235,7 +237,7 @@ class MessageChatActivity : AppCompatActivity() {
                                 override fun onDataChange(p0: DataSnapshot) {
                                     val user = p0.getValue(Users::class.java)
                                     if (notify) {
-                                        sendNotification(userIdVisit, user!!.getUsername(), "sent you an image.")
+                                        sendNotification(userIdVisit, user!!.getUsername(), "sent you an image.", messageId)
                                     }
                                     notify = false
                                 }

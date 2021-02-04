@@ -85,7 +85,7 @@ class MyFirebaseMessaging: FirebaseMessagingService() {
         val j = user!!.replace("[\\D]".toRegex(), "").toInt()
         val intent = Intent(this, MessageChatActivity::class.java)
         val bundle = Bundle()
-        bundle.putString("userid", user)
+        bundle.putString("visit_id", user)
         bundle.putString("messageId", message_id)
         intent.putExtras(bundle)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
