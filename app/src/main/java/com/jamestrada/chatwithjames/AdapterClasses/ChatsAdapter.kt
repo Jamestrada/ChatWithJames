@@ -64,7 +64,7 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
                 holder.right_image_view!!.setOnClickListener {
                     val options = arrayOf<CharSequence>("View Full Image", "Delete Image", "Cancel")
                     var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
-                    builder.setTitle("What would you like to do?")
+//                    builder.setTitle("What would you like to do?")
                     builder.setItems(options, DialogInterface.OnClickListener{
                         dialog, which ->
                         if (which == 0) {
@@ -86,18 +86,21 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
 
                 // delete image options for receiver
                 holder.left_image_view!!.setOnClickListener {
-                    val options = arrayOf<CharSequence>("View Full Image", "Cancel")
-                    var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
-                    builder.setTitle("What would you like to do?")
-                    builder.setItems(options, DialogInterface.OnClickListener{
-                            dialog, which ->
-                        if (which == 0) {
-                            val intent = Intent(mContext, ViewFullImageActivity::class.java)
-                            intent.putExtra("url", chat.getUrl())
-                            mContext.startActivity(intent)
-                        }
-                    })
-                    builder.show()
+//                    val options = arrayOf<CharSequence>("View Full Image", "Cancel")
+//                    var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
+//                    builder.setTitle("What would you like to do?")
+//                    builder.setItems(options, DialogInterface.OnClickListener{
+//                            dialog, which ->
+//                        if (which == 0) {
+//                            val intent = Intent(mContext, ViewFullImageActivity::class.java)
+//                            intent.putExtra("url", chat.getUrl())
+//                            mContext.startActivity(intent)
+//                        }
+//                    })
+                    val intent = Intent(mContext, ViewFullImageActivity::class.java)
+                    intent.putExtra("url", chat.getUrl())
+                    mContext.startActivity(intent)
+//                    builder.show()
                 }
             }
         }
@@ -110,7 +113,7 @@ class ChatsAdapter(mContext: Context, mChatList: List<Chat>, imageUrl: String): 
                 holder.show_text_message!!.setOnClickListener {
                     val options = arrayOf<CharSequence>("Delete Message", "Cancel")
                     var builder: AlertDialog.Builder = AlertDialog.Builder(holder.itemView.context)
-                    builder.setTitle("What would you like to do?")
+//                    builder.setTitle("What would you like to do?")
                     builder.setItems(options, DialogInterface.OnClickListener{
                             dialog, which ->
                         if (which == 0) {

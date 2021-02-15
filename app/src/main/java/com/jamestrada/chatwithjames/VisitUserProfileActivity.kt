@@ -38,23 +38,23 @@ class VisitUserProfileActivity : AppCompatActivity() {
             }
         })
 
-        facebook_display.setOnClickListener {
-            val uri = Uri.parse(user!!.getFacebook())
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
-        }
-
-        instagram_display.setOnClickListener {
-            val uri = Uri.parse(user!!.getInstagram())
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
-        }
-
-        website_display.setOnClickListener {
-            val uri = Uri.parse(user!!.getWebsite())
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
-        }
+//        facebook_display.setOnClickListener {
+//            val uri = Uri.parse(user!!.getFacebook())
+//            val intent = Intent(Intent.ACTION_VIEW, uri)
+//            startActivity(intent)
+//        }
+//
+//        instagram_display.setOnClickListener {
+//            val uri = Uri.parse(user!!.getInstagram())
+//            val intent = Intent(Intent.ACTION_VIEW, uri)
+//            startActivity(intent)
+//        }
+//
+//        website_display.setOnClickListener {
+//            val uri = Uri.parse(user!!.getWebsite())
+//            val intent = Intent(Intent.ACTION_VIEW, uri)
+//            startActivity(intent)
+//        }
 
         send_msg_btn.setOnClickListener {
             val intent = Intent(this, MessageChatActivity::class.java)

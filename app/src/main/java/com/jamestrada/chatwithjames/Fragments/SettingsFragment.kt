@@ -77,20 +77,20 @@ class SettingsFragment : Fragment() {
             pickImage()
         }
 
-        view.set_facebook.setOnClickListener{
-            socialChecker = "facebook"
-            setSocialLinks()
-        }
-
-        view.set_instagram.setOnClickListener{
-            socialChecker = "instagram"
-            setSocialLinks()
-        }
-
-        view.set_website.setOnClickListener{
-            socialChecker = "website"
-            setSocialLinks()
-        }
+//        view.set_facebook.setOnClickListener{
+//            socialChecker = "facebook"
+//            setSocialLinks()
+//        }
+//
+//        view.set_instagram.setOnClickListener{
+//            socialChecker = "instagram"
+//            setSocialLinks()
+//        }
+//
+//        view.set_website.setOnClickListener{
+//            socialChecker = "website"
+//            setSocialLinks()
+//        }
 
         return view
     }

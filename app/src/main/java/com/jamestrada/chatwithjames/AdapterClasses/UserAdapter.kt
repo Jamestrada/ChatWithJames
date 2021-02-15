@@ -67,25 +67,28 @@ class UserAdapter(mContext: Context, mUsers: List<Users>, isChatCheck: Boolean):
         }
 
         holder.itemView.setOnClickListener {
-            val options = arrayOf<CharSequence>(
-                    "Send Message",
-                    "Visit Profile"
-            )
-            val builder: AlertDialog.Builder = AlertDialog.Builder(mContext)
-            builder.setTitle("What would you like to do?")
-            builder.setItems(options, DialogInterface.OnClickListener { _, position ->
-                if (position == 0) { // 0 is user wants to send message
-                    val intent = Intent(mContext, MessageChatActivity::class.java)
-                    intent.putExtra("visit_id", user.getUID())
-                    mContext.startActivity(intent)
-                }
-                if (position == 1) { // 1 is user wants to visit profile
-                    val intent = Intent(mContext, VisitUserProfileActivity::class.java)
-                    intent.putExtra("visit_id", user.getUID())
-                    mContext.startActivity(intent)
-                }
-            })
-            builder.show()
+//            val options = arrayOf<CharSequence>(
+//                    "Send Message",
+//                    "Visit Profile"
+//            )
+//            val builder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+//            builder.setTitle("What would you like to do?")
+//            builder.setItems(options, DialogInterface.OnClickListener { _, position ->
+//                if (position == 0) { // 0 is user wants to send message
+//                    val intent = Intent(mContext, MessageChatActivity::class.java)
+//                    intent.putExtra("visit_id", user.getUID())
+//                    mContext.startActivity(intent)
+//                }
+//                if (position == 1) { // 1 is user wants to visit profile
+//                    val intent = Intent(mContext, VisitUserProfileActivity::class.java)
+//                    intent.putExtra("visit_id", user.getUID())
+//                    mContext.startActivity(intent)
+//                }
+//            })
+//            builder.show()
+            val intent = Intent(mContext, MessageChatActivity::class.java)
+            intent.putExtra("visit_id", user.getUID())
+            mContext.startActivity(intent)
         }
     }
 
